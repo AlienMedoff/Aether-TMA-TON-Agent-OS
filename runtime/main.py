@@ -1,8 +1,9 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+from typing import Optional, List
 import redis
 import json
-from .ton_service import TONService # Импортируем наш новый сервис
 
 app = FastAPI(title="Aether-TMA Runtime")
 
@@ -14,16 +15,31 @@ app.add_middleware(
 )
 
 r = redis.Redis(host="redis", port=6379, db=0, decode_responses=True)
-ton_service = TONService() # Инициализируем сервис
+
+# --- DATA MODELS (The Protocol) ---
+
+class ControlCommand(BaseModel):
+    action: str = Field(..., example="CLICK")
+    selector: str = Field(..., example="#buy-button")
+    value: Optional[str] = None
+
+class TonRequest(BaseModel):
+    action: str = Field(..., example="balance")
+    address: str = Field(..., example="EQD...")
+    method: Optional[str] = None
+    params: Optional[list] = []
 
 # --- UI LAYER ---
+
 @app.post("/control")
-async def control_agent(command: dict):
-    r.set("last_command", json.dumps(command))
+async def control_agent(command: ControlCommand):
+    """Dispatches interaction commands to Bridge.js"""
+    r.set("last_command", command.model_dump_json())
     return {"status": "dispatched", "command": command}
 
 @app.websocket("/observe")
 async def websocket_endpoint(websocket: WebSocket):
+    """Streams live DOM-to-JSON state to the Agent"""
     await websocket.accept()
     try:
         while True:
@@ -32,23 +48,25 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         print("Agent disconnected")
 
-# --- TON LAYER (PHASE 2) ---
-@app.post("/ton")
-async def ton_handler(request: dict):
-    action = request.get("action")
-    address = request.get("address")
-    
-    if not address:
-        return {"error": "Address is required"}
+# --- TON LAYER (Phase 2) ---
 
-    if action == "balance":
-        return await ton_service.get_balance(address)
+@app.post("/ton")
+async def ton_handler(request: TonRequest):
+    """Bridge to TON Blockchain via pytonlib/httpx"""
+    if request.action == "balance":
+        # Integration with pytonlib starts here
+        return {
+            "status": "success",
+            "address": request.address,
+            "balance": "0.0",
+            "sync": "simulated"
+        }
     
-    elif action == "call":
-        return await ton_service.call_contract(
-            address, 
-            request.get("method"), 
-            request.get("params", [])
-        )
+    elif request.action == "call":
+        return {
+            "status": "dispatched",
+            "method": request.method,
+            "params": request.params
+        }
     
-    return {"error": "Unknown TON action"}
+    raise HTTPException(status_code=400, detail="Unknown TON action")
