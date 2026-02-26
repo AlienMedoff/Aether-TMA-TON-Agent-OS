@@ -4,4 +4,9 @@ redis==5.0.1
 pydantic==2.5.3
 python-multipart==0.0.6
 pytonlib==0.1.16
-
+fastapi
+uvicorn
+redis
+websockets
+httpx
+pytonlib
