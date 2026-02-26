@@ -85,6 +85,15 @@ Just create an issue — let's build together.
 
 ---
 
+## 🗺 Roadmap
+
+- [x] **Phase 1: Core Architecture**: WebSocket streaming, Redis state management, and DOM-to-JSON bridge.
+- [ ] **Phase 2: TON Integration**: Adding `ton-core` / `tonweb` modules for direct blockchain interaction (balances, jettons, smart-contract calls).
+- [ ] **Phase 3: Multi-Agent Support**: Orchestrating multiple TMA sessions simultaneously from a single runtime.
+- [ ] **Phase 4: Visual Verification**: Screenshot-based confirmation layer for high-stakes agent decisions.
+
+---
+
 ## License
 
 MIT
