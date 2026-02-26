@@ -21,17 +21,26 @@ The agent no longer just writes text — it **sees** the interface, **understand
 
 ---
 
-## Architecture
+## 🏗 System Architecture
 
-```
-Telegram Mini App (WebView)
-        ↓ Bridge.js (injected)
-Aether Bridge ↔ WebSocket
-        ↓
-FastAPI Runtime + Redis State Layer
-        ↓
-LLM Agent
-```
+Aether-TMA acts as a high-speed middleware between the AI and the interface:
+
+1. **Bridge.js**: Injected into the TMA WebView. It captures the DOM structure and sends it as a JSON stream.
+2. **Aether Runtime**: A FastAPI server that maintains the state in Redis and provides a WebSocket interface for the Agent.
+3. **Agent Logic**: Any LLM (GPT, Claude, or your custom Python logic) that reads the JSON state and sends back interaction commands.
+
+```text
+    +-------------------+       +-----------------------+
+    |   AI LLM AGENT    | <---> |  AETHER RUNTIME (API) |
+    +-------------------+       +----------+------------+
+                                           |
+                                   (WebSocket / JSON)
+                                           |
+                                +----------v------------+
+                                |  TELEGRAM MINI APP    |
+                                |  (with Bridge.js)     |
+                                +-----------------------+
+
 
 ---
 
