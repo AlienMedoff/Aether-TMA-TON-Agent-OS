@@ -2,10 +2,10 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import redis
 import json
+from .ton_service import TONService # Импортируем наш новый сервис
 
 app = FastAPI(title="Aether-TMA Runtime")
 
-# Enable CORS for Telegram Mini App environment
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,59 +13,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Connect to Redis (High-speed state management)
 r = redis.Redis(host="redis", port=6379, db=0, decode_responses=True)
+ton_service = TONService() # Инициализируем сервис
 
-# --- UI INTERACTION LAYER (EYES & HANDS) ---
-
+# --- UI LAYER ---
 @app.post("/control")
 async def control_agent(command: dict):
-    """
-    Receives interaction commands (click, input) and dispatches them to Bridge.js
-    """
     r.set("last_command", json.dumps(command))
     return {"status": "dispatched", "command": command}
 
 @app.websocket("/observe")
 async def websocket_endpoint(websocket: WebSocket):
-    """
-    Streams live UI state (DOM-to-JSON) to the Agent via WebSockets
-    """
     await websocket.accept()
     try:
         while True:
-            # Retrieve current UI state from Redis and stream to Agent
             ui_state = r.get("ui_state") or "{}"
             await websocket.send_text(ui_state)
     except WebSocketDisconnect:
-        print("Agent disconnected from observation stream")
+        print("Agent disconnected")
 
-# --- TON BLOCKCHAIN INTEGRATION (PHASE 2) ---
-
+# --- TON LAYER (PHASE 2) ---
 @app.post("/ton")
 async def ton_handler(request: dict):
-    """
-    Dedicated endpoint for Agent interaction with TON Blockchain
-    """
     action = request.get("action")
+    address = request.get("address")
     
+    if not address:
+        return {"error": "Address is required"}
+
     if action == "balance":
-        address = request.get("address", "Not provided")
-        # To be replaced with actual tonweb/ton-core logic
-        return {
-            "status": "success", 
-            "address": address, 
-            "balance": "0.0", 
-            "note": "Phase 2 simulation active"
-        }
+        return await ton_service.get_balance(address)
     
     elif action == "call":
-        # Smart-contract interaction logic
-        method = request.get("method")
-        return {
-            "status": "dispatched", 
-            "method": method, 
-            "params": request.get("params")
-        }
+        return await ton_service.call_contract(
+            address, 
+            request.get("method"), 
+            request.get("params", [])
+        )
     
-    return {"error": "Unknown TON action requested"}
+    return {"error": "Unknown TON action"}
