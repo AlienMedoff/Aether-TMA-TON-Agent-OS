@@ -1,105 +1,85 @@
-​🌌 Aether-TMA: TON-Agent-OS
+​🌌 ```markdown
+# Aether-TMA-TON-Agent-OS
 
+**Universal Agentic Runtime & Orchestration Layer for Telegram Mini Apps**
 
-​The Universal Agentic Runtime & Orchestration Layer for Telegram Mini Apps (TMA).
+Gives any LLM agent (Claude, GPT, Grok, Llama, etc.) real **eyes and hands** inside Telegram WebView.
 
+The agent no longer just writes text — it **sees** the interface, **understands** it, and **controls** it in real time.
 
-​Aether-TMA is a production-ready infrastructure designed to solve the "Blind Agent" problem. It provides autonomous LLM-based agents with real-time visual observability and deterministic UI control within the Telegram WebView environment.
+---
 
+## Key Features
 
-​🚀 Key Features
+- Real-time DOM observability → clean JSON mapping (via Bridge.js)
+- Deterministic JSON Control Protocol v2.0  
+  (click, type, scroll, swipe, navigate, custom actions)
+- Full TMA environment parity (Safe Area, Notch, Dynamic Island, viewport fixes)
+- Ultra-low latency (< 50 ms) via WebSocket + Redis
+- Production-ready stack: FastAPI + Docker + full isolation
+- TON-ready out of the box (wallet, jettons, orders) and works with any TMA (DeFi, games, marketplaces, dashboards)
 
+---
 
+## Architecture
 
+```
+Telegram Mini App (WebView)
+        ↓ Bridge.js (injected)
+Aether Bridge ↔ WebSocket
+        ↓
+FastAPI Runtime + Redis State Layer
+        ↓
+LLM Agent
+```
 
-​Agentic Observability: Real-time DOM-to-JSON mapping via Bridge.js.
+---
 
+## Quick Start (2 minutes)
 
-​Deterministic Control: JSON Control Protocol v2.0 for precise UI interactions (clicks, inputs, navigation).
-
-
-​Environment Parity: Native handling of TMA-specific quirks (Safe Areas, Notch, Viewport height).
-
-
-​High Performance: Redis-backed state management and asynchronous WebSocket streams.
-
-
-​Production Ready: Dockerized environment for isolated, secure deployment.
-
-
-
-
-​🏗 System Architecture
-
-
-​The system consists of three core components:
-
-
-
-
-​FastAPI Runtime: The brain of the operation. It receives commands from LLMs and streams UI state via WebSockets.
-
-
-​Aether Bridge: A lightweight JavaScript layer injected into the TMA to synchronize the DOM state with the Runtime.
-
-
-​Redis State Layer: Acts as the system's short-term memory, ensuring low-latency communication between the agent and the UI.
-
-
-
-
-​🛠 Quick Start
-
-
-​1. Requirements
-
-
-
-
-​Docker & Docker Compose
-
-
-​Python 3.10+ (for local development)
-
-
-
-
-​2. Launch the Infrastructure
-
+```bash
+git clone https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git
+cd Aether-TMA-TON-Agent-OS
 docker-compose up --build
+```
 
-🔗 Integration Points
+After launch:
 
+- UI State Stream: `ws://localhost:8000/observe`
+- Control endpoint: `POST http://localhost:8000/control`
 
-
-
-​UI Stream: Connect to ws://localhost:8000/observe to receive live UI snapshots.
-
-
-​Control API: Send JSON commands to http://localhost:8000/control.
-
-
-
-
-​Example Command:
-
+Example control payload:
+```json
 {
   "action": "CLICK",
-  "selector": "#buy-button"
+  "selector": "#buy-button",
+  "strategy": "Density > 0.20"
 }
+```
 
-🎯 Vision
+---
 
+## Who It's For
 
-​Aether-TMA aims to be the standard orchestration layer for AI Agents on TON. By providing a reliable way for Agents to "see" and "touch" Mini Apps, we unlock a new generation of autonomous DeFi, Gaming, and Utility bots within Telegram.
+- Developers building autonomous agents
+- Teams that want to turn any TMA into a fully controllable bot
+- Anyone tired of "blind" scripts who needs real visual control
 
+One `docker-compose up` and your agent already sees and clicks buttons like a human.
 
-​📄 License
+---
 
+## Contributing
 
-​Distributed under the MIT License. See LICENSE for more information.
+Open to PRs, ideas and joint agent fleets.  
+Just create an issue — let's build together.
 
+---
 
-​Developed with ⚡ by AlienMedoff
+## License
 
+MIT
+
+**Built with ⚡ by [AlienMedoff](https://github.com/AlienMedoff)**
+```
 
