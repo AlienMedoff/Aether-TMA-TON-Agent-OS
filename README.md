@@ -8,8 +8,6 @@
 
 ---
 
-## 🎥 Live Demo
-*[Вставь сюда гифку или ссылку на видео: `![Demo](ссылка_на_гифку)`]*
 
 **Aether-TMA** gives any LLM agent (Claude, GPT, Grok, etc.) real eyes, hands, and a hardened security backbone inside Telegram WebViews. It transforms blind scripts into autonomous financial agents capable of visual control, secure escrow, and real-time DeFi interaction.
 
@@ -80,10 +78,9 @@ AetherVault and Oracle interact via an asynchronous Request-Response protocol:
  * Phase 1 (Done): Core Agent Runtime & 3-Contract Security Architecture.
  * Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
  * Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
-🤝 Contest Submission
-Built for the Identity Hub: Agent Tooling Fast Grants.
- * Contest Page:
- * Demo:
+
+
+
 Built with ⚡ by AlienMedoff
 
 
