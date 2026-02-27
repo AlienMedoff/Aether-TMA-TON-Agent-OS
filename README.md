@@ -2,6 +2,9 @@
 
 **The missing middleware for autonomous AI agents on the TON ecosystem.**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Tact](https://img.shields.io/badge/Tact-1.x-orange.svg)](https://tact-lang.org/)
+
 ---
 
 Aether-TMA gives any LLM agent (Claude, GPT, Grok, etc.) real eyes, hands, and a hardened security backbone inside Telegram WebViews. It transforms blind scripts into autonomous financial agents capable of visual control, secure escrow, and real-time DeFi interaction.
@@ -24,63 +27,3 @@ graph TD
 
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
-
-After launch:
-
-
-
-
-​UI State Stream: ws://localhost:8000/observe
-
-
-​Control endpoint: POST http://localhost:8000/control
-
-
-
-
-​Example Control Payload:
-
-{
-  "action": "CLICK",
-  "selector": "#buy-button",
-  "strategy": "Density > 0.20"
-}
-
-🛡 Security Protocol
-
-
-​AetherVault and Oracle interact via an asynchronous Request-Response protocol:
-
-
-
-
-​Vault requests trust score via RequestTrustScore(query_id, user).
-
-
-​Oracle verifies and replies with ResponseTrustScore(query_id, score) using SendRemainingValue.
-
-
-​Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
-
-
-
-
-​🗺 Roadmap
-
-
-
-
-​Phase 1 (Done): Core Agent Runtime & 3-Contract Security Architecture.
-
-
-​Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
-
-
-​Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
-
-
-
-
-​Built with ⚡ by AlienMedoff
-
-
