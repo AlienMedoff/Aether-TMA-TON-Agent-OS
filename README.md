@@ -52,7 +52,7 @@ Hardened security backbone for high-stakes agent decisions.
 | AetherOracle | Ed25519 multi-sig verification, Trust Score, Sentinel emergency. |
 | AetherGovernance | DAO-style parameter updates with 48h Timelock. |
 🚀 Quick Start
-git clone [https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git](https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git)
+git clone https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git
 cd Aether-TMA-TON-Agent-OS
 docker-compose up --build
 
@@ -76,6 +76,4 @@ AetherVault and Oracle interact via an asynchronous Request-Response protocol:
  * Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
  * Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
 Built with ⚡ by AlienMedoff
-
-
 
