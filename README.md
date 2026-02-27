@@ -1,4 +1,4 @@
-​🌌 # Aether-TMA: Universal Agentic Runtime & Orchestration Layer
+​# Aether-TMA: Universal Agentic Runtime & Orchestration Layer
 
 **The missing middleware for autonomous AI agents on the TON ecosystem.**
 
@@ -27,6 +27,3 @@ graph TD
 
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
-
-Built with ⚡ by AlienMedoff
-
