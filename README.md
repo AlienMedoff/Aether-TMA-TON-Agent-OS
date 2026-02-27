@@ -1,28 +1,24 @@
-​🌌 ```markdown
-# Aether-TMA-TON-Agent-OS
+​🌌 
+# Aether-TMA: Universal Agentic Runtime & Orchestration Layer
 
-**Universal Agentic Runtime & Orchestration Layer for Telegram Mini Apps**
+**The missing middleware for autonomous AI agents on the TON ecosystem.**
 
-Gives any LLM agent (Claude, GPT, Grok, Llama, etc.) real **eyes and hands** inside Telegram WebView.
-
-The agent no longer just writes text — it **sees** the interface, **understands** it, and **controls** it in real time.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Tact](https://img.shields.io/badge/Tact-1.x-orange.svg)](https://tact-lang.org/)
 
 ---
 
-## Key Features
+## 🎥 Live Demo
+*[Вставь сюда гифку или ссылку на видео: `![Demo](ссылка_на_гифку)`]*
 
-- Real-time DOM observability → clean JSON mapping (via Bridge.js)
-- Deterministic JSON Control Protocol v2.0  
-  (click, type, scroll, swipe, navigate, custom actions)
-- Full TMA environment parity (Safe Area, Notch, Dynamic Island, viewport fixes)
-- Ultra-low latency (< 50 ms) via WebSocket + Redis
-- Production-ready stack: FastAPI + Docker + full isolation
-- TON-ready out of the box (wallet, jettons, orders) and works with any TMA (DeFi, games, marketplaces, dashboards)
+**Aether-TMA** gives any LLM agent (Claude, GPT, Grok, etc.) real eyes, hands, and a hardened security backbone inside Telegram WebViews. It transforms blind scripts into autonomous financial agents capable of visual control, secure escrow, and real-time DeFi interaction.
 
 ---
 
 ## 🏗 System Architecture
 
+### High-Level Flow
+```mermaid
 graph TD
     subgraph Agent_Layer [Agentic Runtime]
         LLM[LLM Agent] -- Control Payload --> RT[Aether Runtime FastAPI]
@@ -38,100 +34,56 @@ graph TD
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
 
-Aether-TMA acts as a high-speed middleware between the AI and the interface:
+Trust Score Protocol
+sequenceDiagram
+    participant V as AetherVault
+    participant O as AetherOracle
 
-1. **Bridge.js**: Injected into the TMA WebView. It captures the DOM structure and sends it as a JSON stream.
-2. **Aether Runtime**: A FastAPI server that maintains the state in Redis and provides a WebSocket interface for the Agent.
-3. **Agent Logic**: Any LLM (GPT, Claude, or your custom Python logic) that reads the JSON state and sends back interaction commands.
+    Note over V: Trigger Request
+    V->>O: RequestTrustScore(query_id, user)
+    O-->>V: ResponseTrustScore(query_id, score)
+    Note over V: Verify Sender & QueryID
 
-```text
-    +-------------------+       +-----------------------+
-    |   AI LLM AGENT    | <---> |  AETHER RUNTIME (API) |
-    +-------------------+       +----------+------------+
-                                           |
-                                   (WebSocket / JSON)
-                                           |
-                                +----------v------------+
-                                |  TELEGRAM MINI APP    |
-                                |  (with Bridge.js)     |
-                                +-----------------------+
-
-
----
-
-## Quick Start (2 minutes)
-
-docker-compose up --build
-# UI State Stream: ws://localhost:8000/observe
-# Control endpoint: POST http://localhost:8000/control
-
-```bash
-git clone https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git
+1. Agentic Runtime (FastAPI)
+The middleware that bridges AI with Telegram Mini Apps via real-time DOM observability.
+ * Real-time DOM: Captures WebView as a JSON stream.
+ * Deterministic Control: Executes clicks, scrolls, and swipes in <50ms.
+ * Stack: Python/FastAPI, Docker, Redis.
+2. On-Chain Security Layer (Tact)
+Hardened security backbone for high-stakes agent decisions.
+| Contract | Purpose |
+|---|---|
+| AetherVault | Agentic escrow, daily limits, Guardian 2-key authorization. |
+| AetherOracle | Ed25519 multi-sig verification, Trust Score, Sentinel emergency. |
+| AetherGovernance | DAO-style parameter updates with 48h Timelock. |
+🚀 Quick Start
+git clone [https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git](https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git)
 cd Aether-TMA-TON-Agent-OS
 docker-compose up --build
-```
-​🛡 Security Protocol
-
-
-​AetherVault and Oracle interact via an asynchronous protocol:
-
-
-
-
-​Vault requests trust score via RequestTrustScore(query_id, user).
-
-
-​Oracle verifies and replies with ResponseTrustScore(query_id, score).
-
-
-​Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
 
 After launch:
-
-- UI State Stream: `ws://localhost:8000/observe`
-- Control endpoint: `POST http://localhost:8000/control`
-
-Example control payload:
-```json
+ * UI State Stream: ws://localhost:8000/observe
+ * Control endpoint: POST http://localhost:8000/control
+Example Control Payload:
 {
   "action": "CLICK",
   "selector": "#buy-button",
   "strategy": "Density > 0.20"
 }
-```
 
----
+🛡 Security Protocol
+AetherVault and Oracle interact via an asynchronous Request-Response protocol:
+ * Vault requests trust score via RequestTrustScore(query_id, user).
+ * Oracle verifies and replies with ResponseTrustScore(query_id, score) using SendRemainingValue.
+ * Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
+🗺 Roadmap
+ * Phase 1 (Done): Core Agent Runtime & 3-Contract Security Architecture.
+ * Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
+ * Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
+🤝 Contest Submission
+Built for the Identity Hub: Agent Tooling Fast Grants.
+ * Contest Page:
+ * Demo:
+Built with ⚡ by AlienMedoff
 
-## Who It's For
-
-- Developers building autonomous agents
-- Teams that want to turn any TMA into a fully controllable bot
-- Anyone tired of "blind" scripts who needs real visual control
-
-One `docker-compose up` and your agent already sees and clicks buttons like a human.
-
----
-
-## Contributing
-
-Open to PRs, ideas and joint agent fleets.  
-Just create an issue — let's build together.
-
----
-
-## 🗺 Roadmap
-
-- [x] **Phase 1: Core Architecture**: WebSocket streaming, Redis state management, and DOM-to-JSON bridge.
-- [ ] **Phase 2: TON Integration**: Adding `ton-core` / `tonweb` modules for direct blockchain interaction (balances, jettons, smart-contract calls).
-- [ ] **Phase 3: Multi-Agent Support**: Orchestrating multiple TMA sessions simultaneously from a single runtime.
-- [ ] **Phase 4: Visual Verification**: Screenshot-based confirmation layer for high-stakes agent decisions.
-
----
-
-## License
-
-MIT
-
-**Built with ⚡ by [AlienMedoff](https://github.com/AlienMedoff)**
-```
 
