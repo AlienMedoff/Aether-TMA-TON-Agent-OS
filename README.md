@@ -23,6 +23,21 @@ The agent no longer just writes text — it **sees** the interface, **understand
 
 ## 🏗 System Architecture
 
+graph TD
+    subgraph Agent_Layer [Agentic Runtime]
+        LLM[LLM Agent] -- Control Payload --> RT[Aether Runtime FastAPI]
+        RT -- WebSocket/JSON --> Bridge[Bridge.js / TMA]
+    end
+
+    subgraph Security_Layer [Hardened Security]
+        V[AetherVault] -- ExecuteTrade --> ST[StormTrade]
+        O[AetherOracle] -- Verify --> V
+        G[AetherGovernance] -- UpdateParams --> V
+    end
+
+    RT -- AgentAction --> V
+    V -- RequestTrustScore --> O
+
 Aether-TMA acts as a high-speed middleware between the AI and the interface:
 
 1. **Bridge.js**: Injected into the TMA WebView. It captures the DOM structure and sends it as a JSON stream.
@@ -46,11 +61,30 @@ Aether-TMA acts as a high-speed middleware between the AI and the interface:
 
 ## Quick Start (2 minutes)
 
+docker-compose up --build
+# UI State Stream: ws://localhost:8000/observe
+# Control endpoint: POST http://localhost:8000/control
+
 ```bash
 git clone https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git
 cd Aether-TMA-TON-Agent-OS
 docker-compose up --build
 ```
+​🛡 Security Protocol
+
+
+​AetherVault and Oracle interact via an asynchronous protocol:
+
+
+
+
+​Vault requests trust score via RequestTrustScore(query_id, user).
+
+
+​Oracle verifies and replies with ResponseTrustScore(query_id, score).
+
+
+​Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
 
 After launch:
 
