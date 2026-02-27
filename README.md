@@ -1,4 +1,5 @@
-​# Aether-TMA: Universal Agentic Runtime & Orchestration Layer
+
+# Aether-TMA: Universal Agentic Runtime & Orchestration Layer
 
 **The missing middleware for autonomous AI agents on the TON ecosystem.**
 
@@ -27,3 +28,52 @@ graph TD
 
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
+
+Trust Score Protocol
+sequenceDiagram
+    participant V as AetherVault
+    participant O as AetherOracle
+
+    Note over V: Trigger Request
+    V->>O: RequestTrustScore(query_id, user)
+    O-->>V: ResponseTrustScore(query_id, score)
+    Note over V: Verify Sender & QueryID
+
+1. Agentic Runtime (FastAPI)
+The middleware that bridges AI with Telegram Mini Apps via real-time DOM observability.
+ * Real-time DOM: Captures WebView as a JSON stream.
+ * Deterministic Control: Executes clicks, scrolls, and swipes in <50ms.
+ * Stack: Python/FastAPI, Docker, Redis.
+2. On-Chain Security Layer (Tact)
+Hardened security backbone for high-stakes agent decisions.
+| Contract | Purpose |
+|---|---|
+| AetherVault | Agentic escrow, daily limits, Guardian 2-key authorization. |
+| AetherOracle | Ed25519 multi-sig verification, Trust Score, Sentinel emergency. |
+| AetherGovernance | DAO-style parameter updates with 48h Timelock. |
+🚀 Quick Start
+git clone [https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git](https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git)
+cd Aether-TMA-TON-Agent-OS
+docker-compose up --build
+
+After launch:
+ * UI State Stream: ws://localhost:8000/observe
+ * Control endpoint: POST http://localhost:8000/control
+Example Control Payload:
+{
+  "action": "CLICK",
+  "selector": "#buy-button",
+  "strategy": "Density > 0.20"
+}
+
+🛡 Security Protocol
+AetherVault and Oracle interact via an asynchronous Request-Response protocol:
+ * Vault requests trust score via RequestTrustScore(query_id, user).
+ * Oracle verifies and replies with ResponseTrustScore(query_id, score) using SendRemainingValue.
+ * Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
+🗺 Roadmap
+ * Phase 1 (Done): Core Agent Runtime & 3-Contract Security Architecture.
+ * Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
+ * Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
+Built with ⚡ by AlienMedoff
+
