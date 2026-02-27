@@ -24,3 +24,63 @@ graph TD
 
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
+
+After launch:
+
+
+
+
+​UI State Stream: ws://localhost:8000/observe
+
+
+​Control endpoint: POST http://localhost:8000/control
+
+
+
+
+​Example Control Payload:
+
+{
+  "action": "CLICK",
+  "selector": "#buy-button",
+  "strategy": "Density > 0.20"
+}
+
+🛡 Security Protocol
+
+
+​AetherVault and Oracle interact via an asynchronous Request-Response protocol:
+
+
+
+
+​Vault requests trust score via RequestTrustScore(query_id, user).
+
+
+​Oracle verifies and replies with ResponseTrustScore(query_id, score) using SendRemainingValue.
+
+
+​Vault checks sender == oracle_address and query_id matching to prevent replay attacks.
+
+
+
+
+​🗺 Roadmap
+
+
+
+
+​Phase 1 (Done): Core Agent Runtime & 3-Contract Security Architecture.
+
+
+​Phase 2 (In-Progress): TON Integration (ton-core) for direct jetton/contract interaction.
+
+
+​Phase 3 (Planned): Multi-agent fleet orchestration & Visual Confirmation layer.
+
+
+
+
+​Built with ⚡ by AlienMedoff
+
+
