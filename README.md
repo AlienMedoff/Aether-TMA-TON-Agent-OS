@@ -15,6 +15,24 @@
 
 ## 🏗 System Architecture
 
+### System Architecture
+```mermaid
+graph TD
+    subgraph Agent_Layer [Agentic Runtime]
+        LLM[LLM Agent] -- Control Payload --> RT[Aether Runtime FastAPI]
+        RT -- WebSocket/JSON --> Bridge[Bridge.js / TMA]
+    end
+
+    subgraph Security_Layer [Hardened Security]
+        V[AetherVault] -- ExecuteTrade --> ST[StormTrade]
+        O[AetherOracle] -- Verify --> V
+        G[AetherGovernance] -- UpdateParams --> V
+    end
+
+    RT -- AgentAction --> V
+    V -- RequestTrustScore --> O
+
+
 ### High-Level Flow
 ```mermaid
 graph TD
@@ -33,6 +51,16 @@ graph TD
     V -- RequestTrustScore --> O
 
 Trust Score Protocol
+
+sequenceDiagram
+    participant V as AetherVault
+    participant O as AetherOracle
+
+    Note over V: Trigger Request
+    V->>O: RequestTrustScore(query_id, user)
+    O-->>V: ResponseTrustScore(query_id, score)
+    Note over V: Verify Sender & QueryID
+
 sequenceDiagram
     participant V as AetherVault
     participant O as AetherOracle
