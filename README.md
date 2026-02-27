@@ -2,9 +2,6 @@
 
 **The missing middleware for autonomous AI agents on the TON ecosystem.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Tact](https://img.shields.io/badge/Tact-1.x-orange.svg)](https://tact-lang.org/)
-
 ---
 
 Aether-TMA gives any LLM agent (Claude, GPT, Grok, etc.) real eyes, hands, and a hardened security backbone inside Telegram WebViews. It transforms blind scripts into autonomous financial agents capable of visual control, secure escrow, and real-time DeFi interaction.
@@ -27,23 +24,3 @@ graph TD
 
     RT -- AgentAction --> V
     V -- RequestTrustScore --> O
-
-sequenceDiagram
-    participant V as AetherVault
-    participant O as AetherOracle
-
-    Note over V: Trigger Request
-    V->>O: RequestTrustScore(query_id, user)
-    O-->>V: ResponseTrustScore(query_id, score)
-    Note over V: Verify Sender & QueryID
-
-git clone https://github.com/AlienMedoff/Aether-TMA-TON-Agent-OS.git
-cd Aether-TMA-TON-Agent-OS
-docker-compose up --build
-
-{
-  "action": "CLICK",
-  "selector": "#buy-button",
-  "strategy": "Density > 0.20"
-}
-
