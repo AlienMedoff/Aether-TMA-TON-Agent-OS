@@ -62,6 +62,12 @@ Security Philosophy: We assume that LLMs are insecure by design. Therefore, all 
 
 
 
+The Security Perimeter: How AetherVault restricts the Agent"
+
+The diagram below shows the flow. Notice how the Agent is separated from the Smart Contracts by the Aether Runtime, ensuring it never touches your private keys directly.
+
+
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    AI LLM AGENT                         │
