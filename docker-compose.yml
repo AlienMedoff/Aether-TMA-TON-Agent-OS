@@ -8,11 +8,11 @@ services:
       - redis
     restart: always
     environment:
-      # Передаем пароль приложению, чтобы оно могло подключиться
+      # Pass the password to the app for authentication
       - REDIS_PASSWORD=StrongPassword123
   redis:
     image: "redis:alpine"
-    # ПОРТЫ УБРАНЫ. Теперь Redis доступен только внутри сети докера (для контейнера runtime)
-    # Добавлена авторизация через --requirepass
+    # PORTS REMOVED. Redis is now accessible only within the internal Docker network (for the runtime container)
+    # Added --requirepass for authentication
     command: redis-server --requirepass StrongPassword123
     restart: always
