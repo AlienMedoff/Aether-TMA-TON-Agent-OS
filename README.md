@@ -54,18 +54,11 @@ This project is an open-source research and development prototype. It is current
 
 
 
-Security Philosophy: We assume that LLMs are insecure by design. Therefore, all financial logic exists outside the agent's reach. The agent is a "guest" in the Aether-TMA runtime, with permissions restricted by the AetherVault smart contract. We don't trust the AI; we verify the intent.
+### 🛡 Security Philosophy
+> **We assume that LLMs are insecure by design.** Therefore, all financial logic exists *outside* the agent's reach. The agent is a "guest" in the Aether-TMA runtime, with permissions restricted by the `AetherVault` smart contract. **We don't trust the AI; we verify the intent.**
 
-
-
-
-
-
-
-The Security Perimeter: How AetherVault restricts the Agent"
-
-The diagram below shows the flow. Notice how the Agent is separated from the Smart Contracts by the Aether Runtime, ensuring it never touches your private keys directly.
-
+### 🛑 The Security Perimeter
+**The diagram below shows the flow. Notice how the Agent is separated from the Smart Contracts by the Aether Runtime, ensuring it never touches your private keys directly.**
 
 
 ```
